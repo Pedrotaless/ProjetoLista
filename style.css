@@ -1,19 +1,17 @@
 /* Importa fonte Inter */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* root variables */
 :root {
-  --bg: #f5f7fb;
+  --bg: #c7cacc; /* branco gelo */
   --card: #ffffff;
   --accent: #2b6ef6;
-  --muted: #4b5563; /* corrigido para melhor contraste */
+  --muted: #4b5563;
   --success: #16a34a;
   --danger: #ef4444;
   --radius: 12px;
   --max-w: 900px;
 }
 
-/* basic reset */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -23,43 +21,54 @@
 
 body {
   background: var(--bg);
-  color: #0f172a;
+  color: #0088f7;
   line-height: 1.4;
   display: flex;
   justify-content: center;
   padding: 24px;
 }
 
-/* app container */
+/* container principal */
 main {
   width: 100%;
   max-width: var(--max-w);
 }
 
-/* header */
+/* HEADER: logo pequena à esquerda, título centralizado */
 .app-header {
-  margin-bottom: 18px;
-  text-align: center;
-}
-.app-header h1 {
-  background: linear-gradient(90deg, var(--accent), #7c3aed);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-size: 1.6rem;
-  font-weight: 600;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centraliza o conteúdo */
+  position: relative;      /* permite posicionar o logo */
+  padding: 0 16px;
 }
 
-/* form */
+.app-header img.logo {
+  width: 28px;   /* logo pequena */
+  height: 28px;
+  position: absolute;
+  left: 16px;    /* fixa no canto esquerdo */
+  top: 50%;
+  transform: translateY(-50%); /* alinha verticalmente */
+}
+
+.app-header h1 {
+  margin: 0 auto;          /* garante centralização */
+  text-align: center;      /* centraliza texto */
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0044ff;
+}
+
+
+/* FORM */
 .task-form-section {
   background: var(--card);
   padding: 16px;
   border-radius: var(--radius);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  margin-bottom: 16px;
 }
 #task-form {
   display: flex;
@@ -81,7 +90,8 @@ main {
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
-  min-width: 100px;
+  min-width: 110px;
+  font-weight: 600;
   transition: background 0.2s, transform 0.12s;
 }
 #task-form button:hover {
@@ -91,11 +101,11 @@ main {
   transform: scale(0.98);
 }
 
-/* filters */
+/* FILTROS */
 .task-controls {
   display: flex;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .filters {
   display: flex;
@@ -104,7 +114,7 @@ main {
 .filter-btn {
   background: transparent;
   border: 1px solid #e6e9ef;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
@@ -119,27 +129,28 @@ main {
   border-color: var(--accent);
 }
 
-/* task list */
+/* LISTA DE TAREFAS */
 .task-list-section {
   background: var(--card);
   padding: 12px;
   border-radius: var(--radius);
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 }
 .task-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 .task-item {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   border: 1px solid #f0f2f5;
   transition: transform 0.12s, opacity 0.2s;
+  background: #fafafa;
 }
 .task-item .meta {
   flex: 1;
@@ -147,6 +158,7 @@ main {
 .task-item h3 {
   margin-bottom: 6px;
   font-size: 1rem;
+  font-weight: 600;
 }
 .task-item p {
   margin: 0;
@@ -161,10 +173,10 @@ main {
 .btn-icon {
   background: transparent;
   border: 1px solid #e6e9ef;
-  padding: 6px 8px;
+  padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s, border 0.2s;
+  transition: background 0.2s, border 0.2s, color 0.2s;
 }
 .btn-icon:hover {
   border-color: var(--danger);
@@ -188,15 +200,15 @@ main {
   border-color: var(--success);
 }
 
-/* mensagem de lista vazia */
-#task-list p {
+/* MENSAGEM LISTA VAZIA */
+#task-list .empty {
   text-align: center;
-  padding: 12px;
+  padding: 16px;
   font-size: 0.95rem;
   color: var(--muted);
 }
 
-/* small screens */
+/* RESPONSIVO */
 @media (max-width: 600px) {
   #task-form {
     flex-direction: column;
@@ -206,5 +218,12 @@ main {
   }
   .filters {
     flex-wrap: wrap;
+  }
+  .app-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .app-header h1 {
+    text-align: center;
   }
 }
