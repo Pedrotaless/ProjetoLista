@@ -1,40 +1,67 @@
-<!doctype html> 
-<html lang="pt-BR"> 
-    
-<head> 
-  <meta charset="utf-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>To-Do List - Sistema de Gerenciamento de Tarefas</title> 
-  <link rel="stylesheet" href="style.css"> 
-</head> 
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List - Sistema de Gerenciamento de Tarefas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<body> 
-  <header class="app-header"> 
-    <h1>Gerenciador de Tarefas</h1> 
-  </header> 
+  <!--============ Cabeçalho ============-->
+  <header>
+    <div class="logo-area">
+      <h1>To-Do-List</h1>
+    </div>
+  </header>
 
-  <main> 
-    <section class="task-form-section"> 
-      <form id="task-form" novalidate> 
-        <input type="text" id="task-title" placeholder="Título da tarefa" required maxlength="100" aria-label="Título da tarefa"> 
-        <textarea id="task-desc" placeholder="Descrição (opcional)" rows="2" aria-label="Descrição da tarefa"></textarea> 
-        <button type="submit" id="add-btn">Adicionar</button> 
-      </form> 
-    </section> 
+  <!--========== Conteúdo Principal ==========-->
+  <main class="container">
 
-    <section class="task-controls"> 
-      <div class="filters" role="tablist" aria-label="Filtros de tarefas"> 
-        <button data-filter="all" class="filter-btn active" aria-pressed="true">Todas</button> 
-        <button data-filter="pending" class="filter-btn" aria-pressed="false">Pendentes</button> 
-        <button data-filter="completed" class="filter-btn" aria-pressed="false">Concluídas</button> 
-      </div> 
-    </section> 
+    <!-- --------- Área Esquerda --------- -->
+    <aside class="left">
+      <img src="lista-de-tarefas.png" alt="Ilustração de lista de tarefas" class="illustration">
+      <p class="tagline">Organize seu dia de forma prática e rápida ✅</p>
+    </aside>
 
-    <section class="task-list-section"> 
-      <ul id="task-list" class="task-list" aria-live="polite"></ul> 
-    </section> 
-  </main> 
+    <!-- --------- Área Direita --------- -->
+    <section class="right">
 
-  <script src="script.js"></script> 
-</body> 
-</html> 
+      <!-- ---------Formulário--------- -->
+      <section class="task-form-section card" aria-labelledby="form-title">
+        <h2 id="form-title">Adicionar Tarefa</h2>
+        <form id="task-form" novalidate>
+          <input type="text" id="task-title" placeholder="Título da tarefa" required maxlength="100" aria-label="Título da tarefa">
+          <textarea id="task-desc" placeholder="Descrição (opcional)" rows="2" aria-label="Descrição da tarefa"></textarea>
+          <button type="submit" id="add-btn">Adicionar</button>
+        </form>
+      </section>
+
+      <!-- -----Filtros----- -->
+      <section class="task-controls card">
+        <h2 class="visually-hidden">Filtros de tarefas</h2>
+        <div class="filters" role="tablist" aria-label="Filtros de tarefas">
+          <button data-filter="all" class="filter-btn active" aria-pressed="true">Todas</button>
+          <button data-filter="pending" class="filter-btn" aria-pressed="false">Pendentes</button>
+          <button data-filter="completed" class="filter-btn" aria-pressed="false">Concluídas</button>
+        </div>
+      </section>
+
+      <!-- -----Lista de Tarefas----- -->
+      <section class="task-list-section card">
+        <h2 class="visually-hidden">Lista de Tarefas</h2>
+        <ul id="task-list" class="task-list" aria-live="polite">
+          <li>Nenhuma tarefa encontrada.</li>
+        </ul>
+      </section>
+    </section>
+  </main>
+
+  <!--=========== Rodapé ===========-->
+  <footer>
+    <p>📌 Desenvolvido por TJ - 2025</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
