@@ -20,7 +20,7 @@ class TaskManager {
       localStorage.removeItem(testKey);
       return true;
     } catch (e) {
-      console.warn('LocalStorage indisponível — usarei somente memória enquanto a página estiver aberta.', e);
+      console.warn('LocalStorage indisponível...', e);
       return false;
     }
   }
@@ -34,7 +34,7 @@ class TaskManager {
     } catch (e) {
       console.error('Erro ao ler/parsear localStorage. Resetando storage.', e);
       this.tasks = [];
-      try { localStorage.removeItem(STORAGE_KEY); } catch (_){}
+      localStorage.removeItem(STORAGE_KEY);
     }
   }
 
@@ -43,7 +43,7 @@ class TaskManager {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.tasks));
     } catch (e) {
-      console.warn('Falha ao salvar no localStorage (quota ou bloqueio).', e);
+      console.warn('Falha ao salvar no localStorage...', e);
     }
   }
 
@@ -101,20 +101,22 @@ class TaskManager {
     li.className = 'task-item' + (task.completed ? ' completed' : '');
     li.dataset.id = task.id;
 
+    //Marcando como concluida
     const dot = document.createElement('span');
     dot.className = 'complete-dot';
     dot.title = task.completed ? 'Reativar tarefa' : 'Marcar como concluída';
     dot.addEventListener('click', () => this.toggleTask(task.id));
 
+    //Conteúdo 
     const meta = document.createElement('div');
-    meta.className = 'meta';
     const h3 = document.createElement('h3');
     h3.textContent = task.title;
     const p = document.createElement('p');
     p.textContent = task.description || '';
     meta.appendChild(h3);
     meta.appendChild(p);
-
+    
+    //Botão remover
     const actions = document.createElement('div');
     actions.className = 'task-actions';
     const delBtn = document.createElement('button');
@@ -126,7 +128,8 @@ class TaskManager {
       this.deleteTask(task.id);
     });
     actions.appendChild(delBtn);
-
+    
+    //Li
     li.appendChild(dot);
     li.appendChild(meta);
     li.appendChild(actions);
@@ -144,28 +147,22 @@ class TaskManager {
       liEmpty.className = 'empty';
       liEmpty.textContent = 'Nenhuma tarefa encontrada.';
       this.listElement.appendChild(liEmpty);
-      console.log('Render: nenhuma tarefa para mostrar.');
       return;
     }
 
     const frag = document.createDocumentFragment();
     tasks.forEach(t => frag.appendChild(this.createTaskElement(t)));
     this.listElement.appendChild(frag);
-    console.log(`Render: ${tasks.length} tarefa(s) mostrada(s). Filtro="${this.filter}"`);
   }
 }
 
-/* --- wiring DOM --- */
+/* --- Integração com DOM --- */
 document.addEventListener('DOMContentLoaded', () => {
   const listEl = document.getElementById('task-list');
   const form = document.getElementById('task-form');
   const titleInput = document.getElementById('task-title');
   const descInput = document.getElementById('task-desc');
   const filterBtns = document.querySelectorAll('.filter-btn');
-
-  // Verificações básicas de sanidade
-  if (!listEl) return console.error('Erro: elemento #task-list não encontrado no DOM.');
-  if (!form) return console.error('Erro: formulário #task-form não encontrado no DOM.');
 
   const manager = new TaskManager(listEl);
   manager.render();
@@ -174,23 +171,20 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const title = titleInput.value;
     const desc = descInput.value;
-    if (!title || !title.trim()) {
-      titleInput.focus();
-      return;
-    }
+    if (!title.trim()) { titleInput.focus(); return; }
     manager.addTask(title, desc);
     form.reset();
     titleInput.focus();
   });
 
+  // Filtros
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
       btn.setAttribute('aria-pressed', 'true');
-      const f = btn.dataset.filter;
-      manager.setFilter(f);
+      manager.setFilter(btn.dataset.filter);
     });
   });
 });
