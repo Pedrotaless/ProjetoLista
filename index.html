@@ -1,67 +1,109 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+  <!-- Define a codificação de caracteres como UTF-8 (suporte a acentuação e caracteres especiais) -->
   <meta charset="utf-8">
+  
+  <!-- Configura o layout para se ajustar ao tamanho da tela (responsividade) -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Título que aparece na aba do navegador -->
   <title>To-Do List - Sistema de Gerenciamento de Tarefas</title>
+  
+  <!-- Importa o arquivo CSS externo -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!--============ Cabeçalho ============-->
+  <!-- ======================== CABEÇALHO ======================== -->
   <header>
     <div class="logo-area">
-      <h1>To-Do-List</h1>
+      <h1>To-Do-List</h1> <!-- Título principal do sistema -->
     </div>
   </header>
 
-  <!--========== Conteúdo Principal ==========-->
+  <!-- ======================== CONTEÚDO PRINCIPAL ======================== -->
   <main class="container">
 
-    <!-- --------- Área Esquerda --------- -->
+    <!-- ---------- COLUNA ESQUERDA (INFORMATIVA / ILUSTRAÇÃO) ---------- -->
     <aside class="left">
+      <!-- Imagem ilustrativa que representa o conceito de lista de tarefas -->
       <img src="lista-de-tarefas.png" alt="Ilustração de lista de tarefas" class="illustration">
+      <!-- Frase de destaque que motiva o uso do sistema -->
       <p class="tagline">Organize seu dia de forma prática e rápida ✅</p>
     </aside>
 
-    <!-- --------- Área Direita --------- -->
+    <!-- ---------- COLUNA DIREITA (ÁREA FUNCIONAL DO SISTEMA) ---------- -->
     <section class="right">
 
-      <!-- ---------Formulário--------- -->
+      <!-- ======= SEÇÃO: FORMULÁRIO DE ADIÇÃO DE TAREFAS ======= -->
       <section class="task-form-section card" aria-labelledby="form-title">
+        <!-- Título do formulário -->
         <h2 id="form-title">Adicionar Tarefa</h2>
+        
+        <!-- Formulário onde o usuário cria uma nova tarefa -->
         <form id="task-form" novalidate>
-          <input type="text" id="task-title" placeholder="Título da tarefa" required maxlength="100" aria-label="Título da tarefa">
-          <textarea id="task-desc" placeholder="Descrição (opcional)" rows="2" aria-label="Descrição da tarefa"></textarea>
+          <!-- Campo para o título da tarefa -->
+          <input 
+            type="text" 
+            id="task-title" 
+            placeholder="Título da tarefa" 
+            required 
+            maxlength="100" 
+            aria-label="Título da tarefa">
+          
+          <!-- Campo opcional para adicionar uma descrição -->
+          <textarea 
+            id="task-desc" 
+            placeholder="Descrição (opcional)" 
+            rows="2" 
+            aria-label="Descrição da tarefa"></textarea>
+          
+          <!-- Botão de envio do formulário -->
           <button type="submit" id="add-btn">Adicionar</button>
         </form>
       </section>
 
-      <!-- -----Filtros----- -->
+      <!-- ======= SEÇÃO: FILTROS DE TAREFAS ======= -->
       <section class="task-controls card">
+        <!-- Título oculto para acessibilidade (não visível, mas lido por leitores de tela) -->
         <h2 class="visually-hidden">Filtros de tarefas</h2>
+
+        <!-- Contêiner dos botões de filtro -->
         <div class="filters" role="tablist" aria-label="Filtros de tarefas">
+          <!-- Botão para mostrar todas as tarefas -->
           <button data-filter="all" class="filter-btn active" aria-pressed="true">Todas</button>
+          
+          <!-- Botão para mostrar apenas tarefas pendentes -->
           <button data-filter="pending" class="filter-btn" aria-pressed="false">Pendentes</button>
+          
+          <!-- Botão para mostrar apenas tarefas concluídas -->
           <button data-filter="completed" class="filter-btn" aria-pressed="false">Concluídas</button>
         </div>
       </section>
 
-      <!-- -----Lista de Tarefas----- -->
+      <!-- ======= SEÇÃO: LISTA DE TAREFAS ======= -->
       <section class="task-list-section card">
+        <!-- Título oculto (para leitores de tela) -->
         <h2 class="visually-hidden">Lista de Tarefas</h2>
+
+        <!-- Lista onde as tarefas serão exibidas dinamicamente via JavaScript -->
         <ul id="task-list" class="task-list" aria-live="polite">
+          <!-- Mensagem exibida quando não há tarefas -->
           <li>Nenhuma tarefa encontrada.</li>
         </ul>
       </section>
-    </section>
-  </main>
 
-  <!--=========== Rodapé ===========-->
+    </section> <!-- Fim da coluna direita -->
+  </main> <!-- Fim do conteúdo principal -->
+
+  <!-- ======================== RODAPÉ ======================== -->
   <footer>
+    <!-- Assinatura / créditos -->
     <p>📌 Desenvolvido por TJ - 2025</p>
   </footer>
 
+  <!-- Importa o script JavaScript que contém toda a lógica do sistema -->
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,147 +1,179 @@
+/* ---------- ESTILO GERAL DA PÁGINA ---------- */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5; /* fundo mais clean */
-  margin: 0;
-  padding: 40px;
-  color: none;
-  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Define a fonte padrão */
+  background-color: #f0f2f5; /* Cor de fundo suave (cinza claro) */
+  margin: 0; /* Remove margens padrão do navegador */
+  padding: 40px; /* Espaçamento interno da página */
 }
 
+/* ---------- ÁREA DO TÍTULO/LOGO ---------- */
 .logo-area h1 {
-  text-align: center;
-  color: blue;
-}
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 40px;
-  max-width: 1200px;
-  margin: auto;
+  text-align: center; /* Centraliza o título */
+  color: blue; /* Define a cor azul do texto */
 }
 
-/* Área da esquerda */
+/* ---------- CONTAINER PRINCIPAL ---------- */
+.container {
+  display: flex; /* Define layout flexível */
+  justify-content: center; /* Centraliza os elementos horizontalmente */
+  align-items: flex-start; /* Alinha ao topo verticalmente */
+  gap: 40px; /* Espaçamento entre as colunas */
+  max-width: 1200px; /* Largura máxima do conteúdo */
+  margin: auto; /* Centraliza o container na tela */
+}
+
+/* ---------- COLUNA ESQUERDA ---------- */
 .left {
-  flex: 1;
-  text-align: center;
+  flex: 1; /* Ocupa menos espaço que a direita */
+  text-align: center; /* Centraliza conteúdo da esquerda */
 }
 
 .left img {
-  max-width: 80%;
-  border-radius: 12px;
+  max-width: 80%; /* Ajusta o tamanho máximo da imagem */
+  border-radius: 12px; /* Arredonda os cantos */
 }
 
 .left h1 {
-  margin-top: 20px;
-  font-size: 26px;
-  color: #1e64e7;
+  margin-top: 20px; /* Espaçamento acima do título */
+  font-size: 26px; /* Tamanho da fonte */
+  color: #1e64e7; /* Cor azul personalizada */
 }
 
-/* Área da direita */
+/* ---------- COLUNA DIREITA ---------- */
 .right {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex: 2; /* Ocupa o dobro de espaço da esquerda */
+  display: flex; /* Layout flexível interno */
+  flex-direction: column; /* Organiza os elementos em coluna */
+  gap: 20px; /* Espaço entre os cards */
 }
 
-/* Estilo dos blocos (cards) */
+/* ---------- ESTILO DOS CARDS ---------- */
 .card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  background: #fff; /* Fundo branco */
+  border-radius: 12px; /* Bordas arredondadas */
+  padding: 20px; /* Espaçamento interno */
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1); /* Sombra leve para destacar */
 }
 
 .card h2 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 18px;
-  color: #1e64e7;
+  margin-top: 0; /* Remove espaço acima do título */
+  margin-bottom: 15px; /* Espaço abaixo do título */
+  font-size: 18px; /* Tamanho do texto */
+  color: #1e64e7; /* Cor azul dos títulos */
 }
 
-/* Formulário */
+/* ---------- FORMULÁRIO ---------- */
 form {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: flex; /* Itens lado a lado */
+  gap: 10px; /* Espaçamento entre inputs */
+  flex-wrap: wrap; /* Quebra linha se necessário */
 }
 
 form input, form textarea {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
+  flex: 1; /* Ocupa o mesmo espaço dentro do form */
+  padding: 10px; /* Espaçamento interno */
+  border: 1px solid #ddd; /* Borda cinza clara */
+  border-radius: 8px; /* Bordas arredondadas */
+  font-size: 14px; /* Tamanho do texto */
 }
 
 form button {
-  background: #1e64e7;
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
+  background: #1e64e7; /* Cor de fundo azul */
+  color: #fff; /* Texto branco */
+  border: none; /* Remove borda padrão */
+  padding: 10px 18px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  font-size: 14px; /* Tamanho da fonte */
+  cursor: pointer; /* Mostra o cursor de clique */
+  transition: 0.3s; /* Suaviza animações de hover */
 }
 
 form button:hover {
-  background: #0d47a1;
+  background: #0d47a1; /* Cor mais escura ao passar o mouse */
 }
 
-/* Filtros */
+/* ---------- BOTÕES DE FILTRO ---------- */
 .filtros {
-  display: flex;
-  gap: 10px;
+  display: flex; /* Layout em linha */
+  gap: 10px; /* Espaçamento entre botões */
 }
 
 .filtros button {
-  background: #e0e0e0;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.3s;
+  background: #e0e0e0; /* Cor cinza clara */
+  border: none; /* Remove borda */
+  padding: 8px 16px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  cursor: pointer; /* Cursor de clique */
+  font-size: 14px; /* Tamanho da fonte */
+  transition: 0.3s; /* Animação suave */
 }
 
 .filtros button:hover {
-  background: #bdbdbd;
+  background: #bdbdbd; /* Escurece ao passar o mouse */
 }
 
 .filtros button.active {
-  background: #1e64e7;
-  color: white;
+  background: #1e64e7; /* Azul para botão ativo */
+  color: white; /* Texto branco */
 }
 
-/* Lista de tarefas */
+/* ---------- LISTA DE TAREFAS ---------- */
 .lista {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  list-style: none; /* Remove marcadores da lista */
+  padding: 0; /* Remove espaçamento interno */
+  margin: 0; /* Remove espaçamento externo */
 }
 
 .lista li {
-  background: #f9f9f9;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: #f9f9f9; /* Fundo cinza claro */
+  padding: 12px; /* Espaçamento interno */
+  border-radius: 8px; /* Bordas arredondadas */
+  margin-bottom: 10px; /* Espaço entre tarefas */
+  display: flex; /* Itens alinhados lado a lado */
+  flex-wrap: wrap; /* Permite quebra de linha */
+  align-items: center; /* Alinha verticalmente */
+  gap: 10px; /* Espaço entre elementos internos */
 }
 
-.lista li.concluida {
-  text-decoration: line-through;
-  background: #d4edda;
-  color: #2e7d32;
+.lista li div {
+  flex: 1; /* Faz o texto ocupar o espaço restante */
+  min-width: 0; /* Evita que o texto force o layout */
 }
 
-/* Rodapé */
+.lista li.completed {
+  text-decoration: line-through; /* Risco no texto */
+  background: #d4edda; /* Fundo verde claro */
+  color: #2e7d32; /* Texto verde escuro */
+}
+
+/* ---------- CHECKBOX DAS TAREFAS ---------- */
+.task-checkbox {
+  width: 18px; /* Largura do checkbox */
+  height: 18px; /* Altura do checkbox */
+  cursor: pointer; /* Indica que é clicável */
+  flex-shrink: 0; /* Impede que o checkbox diminua */
+  margin-right: 10px; /* Espaço à direita */
+}
+
+/* ---------- RESPONSIVIDADE (para telas pequenas) ---------- */
+@media (max-width: 500px) {
+  .lista li {
+    flex-direction: column; /* Empilha os elementos */
+    align-items: flex-start; /* Alinha à esquerda */
+  }
+
+  .lista li .task-actions {
+    margin-top: 8px; /* Espaço acima dos botões */
+    width: 100%; /* Ocupa toda a largura */
+    display: flex; /* Layout flexível */
+    justify-content: flex-end; /* Alinha botões à direita */
+  }
+}
+
+/* ---------- RODAPÉ ---------- */
 footer {
-  margin-top: 40px;
-  text-align: center;
-  font-size: 14px;
-  color: #666;
+  margin-top: 40px; /* Espaçamento acima do rodapé */
+  text-align: center; /* Centraliza o texto */
+  font-size: 14px; /* Tamanho pequeno da fonte */
+  color: #666; /* Cinza suave */
 }

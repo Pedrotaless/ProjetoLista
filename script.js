@@ -1,189 +1,181 @@
-// script.js — Versão com diagnóstico e tratamento de erros
-'use strict';
+'use strict'; 
+// Ativa o modo estrito do JavaScript para evitar erros silenciosos e boas práticas de código.
 
-const STORAGE_KEY = 'todo.tasks';
+const STORAGE_KEY = 'todo.tasks'; 
+// Chave usada para salvar e recuperar as tarefas do localStorage.
 
+/* ------------------------------ CLASSE PRINCIPAL ------------------------------ */
 class TaskManager {
   constructor(listElement) {
-    if (!listElement) throw new Error('Elemento de lista não encontrado. Verifique se existe <ul id="task-list"> no HTML.');
-    this.listElement = listElement;
-    this.tasks = [];
-    this.filter = 'all';
-    this.useLocalStorage = this._checkLocalStorage();
-    this.load();
+    // Verifica se o elemento de lista existe
+    if (!listElement) throw new Error('Elemento de lista não encontrado.');
+    this.listElement = listElement; // Referência ao elemento da lista no HTML
+    this.tasks = []; // Array onde as tarefas serão armazenadas
+    this.filter = 'all'; // Filtro inicial (todas as tarefas)
+    this.useLocalStorage = this._checkLocalStorage(); // Verifica se o navegador suporta localStorage
+    this.load(); // Carrega tarefas salvas
   }
 
+  /* --- Verifica se o localStorage está disponível --- */
   _checkLocalStorage() {
     try {
       const testKey = '__todo_test__';
       localStorage.setItem(testKey, '1');
       localStorage.removeItem(testKey);
-      return true;
-    } catch (e) {
-      console.warn('LocalStorage indisponível...', e);
-      return false;
+      return true; // Se funcionou, retorna verdadeiro
+    } catch {
+      return false; // Caso contrário, desativa o uso do localStorage
     }
   }
 
+  /* --- Carrega as tarefas do localStorage --- */
   load() {
     if (!this.useLocalStorage) { this.tasks = []; return; }
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) { this.tasks = []; return; }
-    try {
-      this.tasks = JSON.parse(raw) || [];
-    } catch (e) {
-      console.error('Erro ao ler/parsear localStorage. Resetando storage.', e);
-      this.tasks = [];
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    const raw = localStorage.getItem(STORAGE_KEY); // Busca as tarefas salvas
+    this.tasks = raw ? JSON.parse(raw) : []; // Converte JSON em array de objetos
   }
 
+  /* --- Salva as tarefas no localStorage --- */
   save() {
-    if (!this.useLocalStorage) return;
-    try {
+    if (this.useLocalStorage) 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this.tasks));
-    } catch (e) {
-      console.warn('Falha ao salvar no localStorage...', e);
-    }
   }
 
+  /* --- Adiciona uma nova tarefa --- */
   addTask(title, description = '') {
-    const t = (title || '').trim();
-    if (!t) return null;
     const task = {
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2,6),
-      title: t,
-      description: (description || '').trim(),
-      completed: false,
-      createdAt: new Date().toISOString()
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), // Cria ID único
+      title: title.trim(), // Remove espaços extras do título
+      description: description.trim(), // Remove espaços da descrição
+      completed: false // Define como não concluída
     };
-    this.tasks.unshift(task);
-    this.save();
-    console.log('Task adicionada:', task);
-    this.render();
-    return task;
+    this.tasks.unshift(task); // Adiciona no início da lista
+    this.save(); // Salva no localStorage
+    this.render(); // Atualiza a interface
   }
 
+  /* --- Remove uma tarefa pelo ID --- */
   deleteTask(id) {
-    const idx = this.tasks.findIndex(t => t.id === id);
-    if (idx === -1) return false;
-    this.tasks.splice(idx, 1);
+    this.tasks = this.tasks.filter(t => t.id !== id); // Filtra e mantém as tarefas diferentes do ID
     this.save();
-    console.log('Task removida (id):', id);
     this.render();
-    return true;
   }
 
+  /* --- Alterna o estado de conclusão da tarefa --- */
   toggleTask(id) {
-    const t = this.tasks.find(x => x.id === id);
-    if (!t) return false;
-    t.completed = !t.completed;
+    const t = this.tasks.find(x => x.id === id); // Busca a tarefa pelo ID
+    if (!t) return; // Se não encontrar, sai da função
+    t.completed = !t.completed; // Inverte o estado (true ↔ false)
     this.save();
-    console.log('Task alternada (id):', id, 'completed=', t.completed);
     this.render();
-    return true;
   }
 
+  /* --- Define qual filtro está ativo (todas, pendentes, concluídas) --- */
   setFilter(f) {
     this.filter = f;
     this.render();
   }
 
+  /* --- Retorna a lista de tarefas de acordo com o filtro selecionado --- */
   filteredTasks() {
-    if (this.filter === 'all') return this.tasks;
-    if (this.filter === 'pending') return this.tasks.filter(t => !t.completed);
-    if (this.filter === 'completed') return this.tasks.filter(t => t.completed);
+    if (this.filter === 'all') return this.tasks; // Todas
+    if (this.filter === 'pending') return this.tasks.filter(t => !t.completed); // Pendentes
+    if (this.filter === 'completed') return this.tasks.filter(t => t.completed); // Concluídas
     return this.tasks;
   }
 
+  /* --- Cria o elemento visual (HTML) de uma tarefa --- */
   createTaskElement(task) {
-    const li = document.createElement('li');
-    li.className = 'task-item' + (task.completed ? ' completed' : '');
-    li.dataset.id = task.id;
+    const li = document.createElement('li'); // Cria item da lista
+    li.className = 'task-item' + (task.completed ? ' completed' : ''); // Adiciona classe se estiver concluída
+    li.dataset.id = task.id; // Armazena o ID da tarefa no HTML
 
-    //Marcando como concluida
-    const dot = document.createElement('span');
-    dot.className = 'complete-dot';
-    dot.title = task.completed ? 'Reativar tarefa' : 'Marcar como concluída';
-    dot.addEventListener('click', () => this.toggleTask(task.id));
+    // ✅ Checkbox de conclusão
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'task-checkbox';
+    checkbox.checked = task.completed; // Marca se estiver concluída
+    checkbox.addEventListener('change', () => this.toggleTask(task.id)); // Ao clicar, alterna o status
 
-    //Conteúdo 
+    // Conteúdo da tarefa (título e descrição)
     const meta = document.createElement('div');
     const h3 = document.createElement('h3');
-    h3.textContent = task.title;
+    h3.textContent = task.title; // Mostra o título
     const p = document.createElement('p');
-    p.textContent = task.description || '';
+    p.textContent = task.description || ''; // Mostra a descrição (ou vazio)
     meta.appendChild(h3);
     meta.appendChild(p);
-    
-    //Botão remover
+
+    // Botão de remover tarefa
     const actions = document.createElement('div');
-    actions.className = 'task-actions';
     const delBtn = document.createElement('button');
-    delBtn.className = 'btn-icon';
     delBtn.textContent = 'Remover';
     delBtn.addEventListener('click', () => {
-      const ok = confirm('Deseja realmente remover esta tarefa?');
-      if (!ok) return;
-      this.deleteTask(task.id);
+      if (confirm('Deseja realmente remover esta tarefa?')) this.deleteTask(task.id);
     });
     actions.appendChild(delBtn);
-    
-    //Li
-    li.appendChild(dot);
+
+    // Monta o item da lista (li)
+    li.appendChild(checkbox);
     li.appendChild(meta);
     li.appendChild(actions);
 
-    return li;
+    return li; // Retorna o elemento pronto
   }
 
+  /* --- Atualiza a lista exibida na tela --- */
   render() {
-    // limpa lista de forma segura
-    while (this.listElement.firstChild) this.listElement.removeChild(this.listElement.firstChild);
+    // Remove os itens atuais antes de atualizar
+    while (this.listElement.firstChild) 
+      this.listElement.removeChild(this.listElement.firstChild);
 
-    const tasks = this.filteredTasks();
+    const tasks = this.filteredTasks(); // Pega as tarefas de acordo com o filtro
     if (!tasks.length) {
+      // Caso não haja tarefas, mostra uma mensagem
       const liEmpty = document.createElement('li');
-      liEmpty.className = 'empty';
       liEmpty.textContent = 'Nenhuma tarefa encontrada.';
       this.listElement.appendChild(liEmpty);
       return;
     }
 
-    const frag = document.createDocumentFragment();
-    tasks.forEach(t => frag.appendChild(this.createTaskElement(t)));
-    this.listElement.appendChild(frag);
+    // Adiciona cada tarefa na tela
+    tasks.forEach(t => this.listElement.appendChild(this.createTaskElement(t)));
   }
 }
 
-/* --- Integração com DOM --- */
+/* ------------------------------ INTEGRAÇÃO COM O HTML ------------------------------ */
 document.addEventListener('DOMContentLoaded', () => {
-  const listEl = document.getElementById('task-list');
-  const form = document.getElementById('task-form');
-  const titleInput = document.getElementById('task-title');
-  const descInput = document.getElementById('task-desc');
-  const filterBtns = document.querySelectorAll('.filter-btn');
+  // Aguarda o carregamento do DOM
+  const listEl = document.getElementById('task-list'); // UL onde as tarefas serão listadas
+  const form = document.getElementById('task-form'); // Formulário de adicionar tarefa
+  const titleInput = document.getElementById('task-title'); // Campo do título
+  const descInput = document.getElementById('task-desc'); // Campo da descrição
+  const filterBtns = document.querySelectorAll('.filter-btn'); // Botões de filtro (todos, pendentes, concluídos)
 
-  const manager = new TaskManager(listEl);
-  manager.render();
+  const manager = new TaskManager(listEl); // Cria o gerenciador de tarefas
+  manager.render(); // Exibe as tarefas salvas (se existirem)
 
+  // Evento de envio do formulário
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const title = titleInput.value;
-    const desc = descInput.value;
-    if (!title.trim()) { titleInput.focus(); return; }
-    manager.addTask(title, desc);
-    form.reset();
-    titleInput.focus();
+    e.preventDefault(); // Evita recarregar a página
+    if (!titleInput.value.trim()) { titleInput.focus(); return; } // Impede envio vazio
+    manager.addTask(titleInput.value, descInput.value); // Adiciona a nova tarefa
+    form.reset(); // Limpa os campos
+    titleInput.focus(); // Retorna o foco para o campo título
   });
 
-  // Filtros
+  // Eventos dos botões de filtro
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      // Remove o estado ativo dos outros botões
       filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      btn.classList.add('active'); // Destaca o botão atual
+
+      // Atualiza atributo ARIA (acessibilidade)
       filterBtns.forEach(b => b.setAttribute('aria-pressed', 'false'));
       btn.setAttribute('aria-pressed', 'true');
+
+      // Aplica o filtro correspondente
       manager.setFilter(btn.dataset.filter);
     });
   });
